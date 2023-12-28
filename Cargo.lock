@@ -14,6 +14,8 @@ dependencies = [
 [[package]]
 name = "double_dot_macro_types"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1d2506439934b4c47802ef7ab53db6341d38bb166965e002eaf5dc618446d55e"
 dependencies = [
  "proc-macro2",
  "quote",

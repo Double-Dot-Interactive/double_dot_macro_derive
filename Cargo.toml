@@ -14,7 +14,8 @@ readme = "README.md"
 [dependencies]
 quote = "1.0.33"
 syn = "2.0.43"
-double_dot_macro_types = { path = "../double_dot_macro_types"}
+# double_dot_macro_types = { path = "../double_dot_macro_types"}
+double_dot_macro_types = "0.1.0"
 
 [lib]
 proc-macro = true
