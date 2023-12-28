@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use syn::{DeriveInput, Data, Ident};
 use double_dot_macro_types::*;
 
-fn impl_double_state_trait(ast: DeriveInput) -> TokenStream {
+fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
     let enum_name = ast.ident;
 
     match ast.data {
@@ -90,9 +90,9 @@ fn impl_double_state_trait(ast: DeriveInput) -> TokenStream {
             let idents = enum_data.variants.iter().map(|v| &v.ident);
             let len = idents.len();
         
-            // our DoubleState implementations
+            // our DoubleStates implementations
             let double_state = quote::quote!{
-                impl DoubleState for #enum_name {
+                impl DoubleStates for #enum_name {
                     fn name(&self) -> &'static str {
                         #enum_str
                     }
@@ -187,7 +187,7 @@ fn impl_double_state_trait(ast: DeriveInput) -> TokenStream {
                 }
             };
             
-            // compile the bevy States impl with the DoubleState impl 
+            // compile the bevy States impl with the DoubleStates impl 
             quote::quote!{
                 #double_state
                 #bevy_states
@@ -196,7 +196,7 @@ fn impl_double_state_trait(ast: DeriveInput) -> TokenStream {
         _ => {
             syn::Error::new_spanned(
                 &enum_name,
-                "DoubleState can only be derived for enums with variants",
+                "DoubleStates can only be derived for enums with variants",
             )
             .to_compile_error()
             .into()
@@ -205,9 +205,9 @@ fn impl_double_state_trait(ast: DeriveInput) -> TokenStream {
 
 }
  
-#[proc_macro_derive(DoubleState, attributes(linear, arbitrary))]
-pub fn double_state_derive_macro(item: TokenStream) -> TokenStream {
+#[proc_macro_derive(DoubleStates, attributes(linear, arbitrary))]
+pub fn double_states_derive_macro(item: TokenStream) -> TokenStream {
     let ast: DeriveInput = syn::parse(item).unwrap();
 
-    impl_double_state_trait(ast)
+    impl_double_states_trait(ast)
 }
