@@ -47,14 +47,14 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                         }) {
                             // if there was a problem parsing the attributes parameteres
                             return syn::Error::new_spanned(
-                                &enum_name,
+                                &field.ident,
                                 format!("Problem parsing linear list for \"{}\"", field.ident.to_string()),
                             ).to_compile_error().into()
                         }
                         // if more than 1 linear transition was found give a compile error
                         if i > 1 {
                             return syn::Error::new_spanned(
-                                &enum_name,
+                                &field.ident,
                                 format!("Only 1 Linear Transition allowed. Error Occured On \"{}\"", field.ident.to_string()),
                             ).to_compile_error().into()
                         }
@@ -69,7 +69,7 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                         }) {
                             // if there was a problem parsing the attributes parameters
                             return syn::Error::new_spanned(
-                                &enum_name,
+                                &field.ident,
                                 format!("Problem parsing arbitrary list for \"{}\"", field.ident.to_string()),
                             ).to_compile_error().into()
                         }
@@ -78,7 +78,7 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                     for next_state in next_states.iter() {
                         if let None = ident_fields.iter().find(|field| field.to_string() == next_state.to_string()) {
                             return syn::Error::new_spanned(
-                                &enum_name,
+                                &next_state,
                                 format!("\"{}\" doesn't exist as a state in \"{}\"", next_state.to_string(), enum_name.to_string()),
                             ).to_compile_error().into()
                         }
