@@ -4,6 +4,7 @@ use double_dot_macro_types::*;
 
 fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
     let enum_name = ast.ident;
+    let (enum_name1, enum_name2) = (enum_name.to_string(), enum_name.to_string());
 
     match ast.data {
         Data::Enum(enum_data) => {
@@ -47,14 +48,14 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                             // if there was a problem parsing the attributes parameteres
                             return syn::Error::new_spanned(
                                 &enum_name,
-                                format!("Problem parsing linear list for {}", field.ident.to_string()),
+                                format!("Problem parsing linear list for \"{}\"", field.ident.to_string()),
                             ).to_compile_error().into()
                         }
                         // if more than 1 linear transition was found give a compile error
                         if i > 1 {
                             return syn::Error::new_spanned(
                                 &enum_name,
-                                format!("Only 1 Linear Transition allowed. Error Occured On {}", field.ident.to_string()),
+                                format!("Only 1 Linear Transition allowed. Error Occured On \"{}\"", field.ident.to_string()),
                             ).to_compile_error().into()
                         }
                     }
@@ -69,7 +70,7 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                             // if there was a problem parsing the attributes parameters
                             return syn::Error::new_spanned(
                                 &enum_name,
-                                format!("Problem parsing arbitrary list for {}", field.ident.to_string()),
+                                format!("Problem parsing arbitrary list for \"{}\"", field.ident.to_string()),
                             ).to_compile_error().into()
                         }
                     }
@@ -78,7 +79,7 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                         if let None = ident_fields.iter().find(|field| field.to_string() == next_state.to_string()) {
                             return syn::Error::new_spanned(
                                 &enum_name,
-                                format!("'{}' doesn't exist as a state in '{}'", next_state.to_string(), enum_name.to_string()),
+                                format!("\"{}\" doesn't exist as a state in \"{}\"", next_state.to_string(), enum_name.to_string()),
                             ).to_compile_error().into()
                         }
                     }
@@ -119,20 +120,20 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                         state_fields.clone().for_each(|f| {
                             // check if the field name string matched the self field name string
                             if f.0 == self.to_string() {
-                                lin_found = true;
                                 next_state = f.1.to_string();
                             }
                         });
                         // grab the value of the next state and set it to the return variable
                         variants.for_each(|var| {
                             if var.to_string() == next_state {
+                                lin_found = true;
                                 new_field = var.clone();
                             }
                         });
 
                         // if no linear transitions were found for self we should panic as this can be a program breaking bug
                         if !lin_found {
-                            panic!("No linear transition found for {:?}", self);
+                            panic!("No linear transition found for \"{}::{:?}\"", #enum_name1, self);
                         }
 
                         return new_field
@@ -164,7 +165,7 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                         });
                         // if we didn't find the arbirary state we should panic as this can be a program breaking bug
                         if !arb_found {
-                            panic!("Arbitrary transition {:?} not found for {:?}", next_state, self);
+                            panic!("Arbitrary transition \"{:?}\" not found for \"{}::{:?}\"", next_state, #enum_name2, self);
                         }
                         return arb_state
                     }
