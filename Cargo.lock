@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "double_dot_macro_derive"
-version = "0.1.21"
+version = "0.2.0"
 dependencies = [
  "double_dot_macro_types",
  "quote",

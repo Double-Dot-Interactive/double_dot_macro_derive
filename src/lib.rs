@@ -88,8 +88,8 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                 state_fields.push(StateField::new(field.ident.to_string(), lin_attr, arb_attr))
             }
 
-            let idents = enum_data.variants.iter().map(|v| &v.ident);
-            let len = idents.len();
+            // let idents = enum_data.variants.iter().map(|v| &v.ident);
+            // let len = idents.len();
         
             // our DoubleStates implementations
             let double_state = quote::quote!{
@@ -178,13 +178,13 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
             // impl bevy's States so the user doesn't have to 
             let bevy_states = quote::quote! {
                 impl bevy::prelude::States for #enum_name {
-                    // Bevy's States trait requires specific methods to be implemented
-                    // Implement the required methods here
-                    type Iter = std::array::IntoIter<Self, #len>;
+                    // // Bevy's States trait requires specific methods to be implemented
+                    // // Implement the required methods here
+                    // type Iter = std::array::IntoIter<Self, #len>;
         
-                    fn variants() -> Self::Iter {
-                        [#(Self::#ident_fields,)*].into_iter()
-                    }
+                    // fn variants() -> Self::Iter {
+                    //     [#(Self::#ident_fields,)*].into_iter()
+                    // }
                 }
             };
             

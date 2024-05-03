@@ -1,6 +1,6 @@
 [package]
 name = "double_dot_macro_derive"
-version = "0.1.21"
+version = "0.2.0"
 edition = "2021"
 authors = ["doubledotinteractive@gmail.com"]
 description = "Procedural Derive Macros for the Double-Dot crate ecosystem"
