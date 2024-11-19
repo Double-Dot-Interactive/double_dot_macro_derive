@@ -186,6 +186,7 @@ fn impl_double_states_trait(ast: DeriveInput) -> TokenStream {
                     //     [#(Self::#ident_fields,)*].into_iter()
                     // }
                 }
+                impl bevy::state::state::FreelyMutableState for #enum_name {}
             };
             
             // compile the bevy States impl with the DoubleStates impl 
